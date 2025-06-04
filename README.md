@@ -134,6 +134,7 @@ Fork `master` branch into your personal repository. Clone it to local computer. 
 
 ```sh
 $ git clone https://github.com/{your-personal-repo}/tui.editor.git
+$ export NODE_OPTIONS=--openssl-legacy-provider
 $ cd [project-name]
 $ npm install
 $ npm run setup:libs
