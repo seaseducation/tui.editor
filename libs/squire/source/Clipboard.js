@@ -145,7 +145,6 @@ var onPaste = function ( event ) {
     var items = clipboardData && clipboardData.items;
     var choosePlain = this.isShiftDown;
     var fireDrop = false;
-    var hasImage = false;
     var plainItem = null;
     var self = this;
     var l, item, type, types, data;
@@ -170,30 +169,11 @@ var onPaste = function ( event ) {
             if ( type === 'text/plain' ) {
                 plainItem = item;
             }
-            if ( !choosePlain && /^image\/.*/.test( type ) ) {
-                hasImage = true;
-            }
         }
         // Treat image paste as a drop of an image file.
-        if ( hasImage ) {
-            this.fireEvent( 'dragover', {
-                dataTransfer: clipboardData,
-                /*jshint loopfunc: true */
-                preventDefault: function () {
-                    fireDrop = true;
-                }
-                /*jshint loopfunc: false */
-            });
-            if ( fireDrop ) {
-                this.fireEvent( 'drop', {
-                    dataTransfer: clipboardData
-                });
-            }
-        } else if ( plainItem ) {
-            plainItem.getAsString( function ( text ) {
-                self.insertPlainText( text, true );
-            });
-        }
+        plainItem.getAsString( function ( text ) {
+            self.insertPlainText( text, true );
+        });
         return;
     }
 

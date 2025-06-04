@@ -3,7 +3,6 @@
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 import forEachArray from 'tui-code-snippet/collection/forEachArray';
-import inArray from 'tui-code-snippet/array/inArray';
 
 const URLRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})(\/([^\s]*))?$/g;
 
@@ -100,21 +99,6 @@ class ImportManager {
         firstChild.innerText = decodeURIGraceful(text);
         firstChild.href = encodeMarkdownCharacters(firstChild.href);
       }
-    }
-  }
-
-  /**
-   * Get blob or excel data from clipboard
-   * @param {object} evData Clipboard data
-   * @private
-   */
-  _processClipboard(evData) {
-    const cbData = evData.clipboardData || window.clipboardData;
-    const blobItems = cbData && cbData.items;
-    const { types } = cbData;
-
-    if (blobItems && types && types.length === 1 && inArray('Files', [].slice.call(types)) !== -1) {
-      this._processBlobItems(blobItems, evData);
     }
   }
 }

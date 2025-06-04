@@ -115,7 +115,7 @@ class MarkdownEditor extends CodeMirrorExt {
   constructor(el, eventManager, toastMark, options) {
     super(el, {
       dragDrop: true,
-      allowDropFileTypes: ['image'],
+      allowDropFileTypes: [],
       extraKeys: {
         Enter: () => this.eventManager.emit('command', 'AddLine'),
         Tab: () => this.eventManager.emit('command', 'MoveNextCursorOrIndent'),
