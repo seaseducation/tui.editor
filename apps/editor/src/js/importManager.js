@@ -14,6 +14,10 @@ const URLRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})(\/([^\s]*))?$/g;
 class ImportManager {
   constructor(eventManager) {
     this.eventManager = eventManager;
+
+    this.eventManager.listen('pasteBefore', ev => {
+      this._decodeURL(ev);
+    });
   }
 
   /**

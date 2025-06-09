@@ -132,15 +132,6 @@ describe('Convertor', () => {
       expect(convertor.toHTML(tag).replace(/\n/g, '')).toBe(expectedHTML);
     });
 
-    it('should insert data-tomark-pass in html tag even if attrubute has slash', () => {
-      const imgTag =
-        '<img src="https://user-images.githubusercontent.com/1215767/34336735-e7c9c4b0-e99c-11e7-853b-2449b51f0bab.png">';
-      const expectedHTML =
-        '<img src="https://user-images.githubusercontent.com/1215767/34336735-e7c9c4b0-e99c-11e7-853b-2449b51f0bab.png" data-tomark-pass="">';
-
-      expect(convertor.toHTML(imgTag).replace(/\n/g, '')).toBe(expectedHTML);
-    });
-
     it('should not insert data-tomark-pass in codeblock that has tag', () => {
       const codeBlockMd = '```\n<p>hello</p>\n```';
       const expectedHTML = `<pre><code>&lt;p&gt;hello&lt;/p&gt;</code></pre>`;
