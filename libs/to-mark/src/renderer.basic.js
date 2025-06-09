@@ -80,16 +80,6 @@ export default Renderer.factory({
 
     return res;
   },
-  IMG(node) {
-    const src = node.getAttribute('src');
-    const { alt } = node;
-
-    if (src) {
-      return `![${this.escapeTextForLink(alt)}](${src})`;
-    }
-
-    return '';
-  },
   BR() {
     return '  \n';
   },

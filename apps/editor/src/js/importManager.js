@@ -3,7 +3,6 @@
  * @author NHN FE Development Lab <dl_javascript@nhn.com>
  */
 import forEachArray from 'tui-code-snippet/collection/forEachArray';
-import inArray from 'tui-code-snippet/array/inArray';
 
 const URLRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})(\/([^\s]*))?$/g;
 
@@ -16,8 +15,9 @@ class ImportManager {
   constructor(eventManager) {
     this.eventManager = eventManager;
 
-    this._initEvent();
-    this._initDefaultImageImporter();
+    this.eventManager.listen('pasteBefore', ev => {
+      this._decodeURL(ev);
+    });
   }
 
   /**
@@ -78,82 +78,6 @@ class ImportManager {
   }
 
   /**
-   * Initialize event handler
-   * @private
-   */
-  _initEvent() {
-    this.eventManager.listen('drop', ev => {
-      const items = ev.data.dataTransfer && ev.data.dataTransfer.files;
-
-      this._processBlobItems(items, ev.data);
-    });
-
-    this.eventManager.listen('willPaste', ev => {
-      // IE has no interface to handle clipboard image. #976
-      const { fragment } = ev.data;
-      const descendant = fragment.querySelectorAll('*');
-
-      // only if paste event data has one img element and the element has base64 encoded image
-      if (
-        descendant.length !== 1 ||
-        descendant[0].tagName !== 'IMG' ||
-        !/^data:image/.test(descendant[0].src)
-      ) {
-        return;
-      }
-      ev.data.preventDefault();
-
-      const blob = dataURItoBlob(descendant[0].src);
-
-      this._emitAddImageBlobHook(blob, 'paste');
-    });
-
-    this.eventManager.listen('paste', ev => {
-      this._processClipboard(ev.data);
-    });
-
-    this.eventManager.listen('pasteBefore', ev => {
-      this._decodeURL(ev);
-    });
-  }
-
-  /**
-   * Initialize default image importer
-   * @private
-   */
-  _initDefaultImageImporter() {
-    this.eventManager.listen('addImageBlobHook', (blob, callback) => {
-      const reader = new FileReader();
-
-      reader.onload = event => {
-        callback(event.target.result);
-      };
-
-      reader.readAsDataURL(blob);
-    });
-  }
-
-  /**
-   * Emit add image blob hook
-   * @param {object} blob - blob or file
-   * @param {string} type - type of an event the item belongs to. paste or drop
-   * @private
-   */
-  _emitAddImageBlobHook(blob, type) {
-    this.eventManager.emit(
-      'addImageBlobHook',
-      blob,
-      (imageUrl, altText) => {
-        this.eventManager.emit('command', 'AddImage', {
-          imageUrl,
-          altText: altText || blob.name || 'image'
-        });
-      },
-      type
-    );
-  }
-
-  /**
    * Decode url when paste link
    * @param {object} ev - event object
    * @private
@@ -181,69 +105,6 @@ class ImportManager {
       }
     }
   }
-
-  /**
-   * Get blob or excel data from clipboard
-   * @param {object} evData Clipboard data
-   * @private
-   */
-  _processClipboard(evData) {
-    const cbData = evData.clipboardData || window.clipboardData;
-    const blobItems = cbData && cbData.items;
-    const { types } = cbData;
-
-    if (blobItems && types && types.length === 1 && inArray('Files', [].slice.call(types)) !== -1) {
-      this._processBlobItems(blobItems, evData);
-    }
-  }
-
-  /**
-   * Process for blob item
-   * @param {Array.<string>} items Item array
-   * @param {object} evData Event data
-   * @private
-   */
-  _processBlobItems(items, evData) {
-    if (items) {
-      forEachArray(items, item => {
-        if (item.type.indexOf('image') !== -1) {
-          evData.preventDefault();
-          evData.stopPropagation();
-          evData.codemirrorIgnore = true;
-
-          const blob = item.name ? item : item.getAsFile(); // Blob or File
-
-          this._emitAddImageBlobHook(blob, evData.type);
-
-          return false;
-        }
-
-        return true;
-      });
-    }
-  }
-}
-
-/**
- * data URI to Blob
- * @param {string} dataURI - data URI string
- * @returns {Blob} - blob data
- * @ignore
- */
-function dataURItoBlob(dataURI) {
-  const byteString = atob(dataURI.split(',')[1]);
-
-  const ab = new ArrayBuffer(byteString.length);
-  const ia = new Uint8Array(ab);
-
-  for (let i = 0; i < byteString.length; i += 1) {
-    ia[i] = byteString.charCodeAt(i);
-  }
-
-  const [mimeString] = dataURI.split(',');
-  const blob = new Blob([ab], { type: mimeString.split(':')[1].split(';')[0] });
-
-  return blob;
 }
 
 export default ImportManager;

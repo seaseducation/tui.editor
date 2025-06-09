@@ -19,7 +19,6 @@ import WysiwygEditor from './wysiwygEditor';
 import Layout from './layout';
 import EventManager from './eventManager';
 import CommandManager from './commandManager';
-import ImportManager from './importManager';
 import WwCodeBlockManager from './wwCodeBlockManager';
 import Convertor from './convertor';
 import Viewer from './viewer';
@@ -41,7 +40,6 @@ import mdHeading from './markdownCommands/heading';
 import mdParagraph from './markdownCommands/paragraph';
 import mdHR from './markdownCommands/hr';
 import mdAddLink from './markdownCommands/addLink';
-import mdAddImage from './markdownCommands/addImage';
 import mdUL from './markdownCommands/ul';
 import mdOL from './markdownCommands/ol';
 import mdIndent from './markdownCommands/indent';
@@ -61,7 +59,6 @@ import wwBold from './wysiwygCommands/bold';
 import wwItalic from './wysiwygCommands/italic';
 import wwStrike from './wysiwygCommands/strike';
 import wwBlockquote from './wysiwygCommands/blockquote';
-import wwAddImage from './wysiwygCommands/addImage';
 import wwAddLink from './wysiwygCommands/addLink';
 import wwHR from './wysiwygCommands/hr';
 import wwHeading from './wysiwygCommands/heading';
@@ -181,8 +178,6 @@ class ToastUIEditor {
     this.codeBlockLanguages = [];
 
     this.eventManager = new EventManager();
-
-    this.importManager = new ImportManager(this.eventManager);
 
     this.commandManager = new CommandManager(this, {
       useCommandShortcut: this.options.useCommandShortcut
@@ -339,7 +334,6 @@ class ToastUIEditor {
     this.addCommand(mdParagraph);
     this.addCommand(mdHR);
     this.addCommand(mdAddLink);
-    this.addCommand(mdAddImage);
     this.addCommand(mdUL);
     this.addCommand(mdOL);
     this.addCommand(mdIndent);
@@ -360,7 +354,6 @@ class ToastUIEditor {
     this.addCommand(wwBlockquote);
     this.addCommand(wwUL);
     this.addCommand(wwOL);
-    this.addCommand(wwAddImage);
     this.addCommand(wwAddLink);
     this.addCommand(wwHR);
     this.addCommand(wwHeading);

@@ -1793,14 +1793,6 @@ proto.insertElement = function ( el, range ) {
     return this;
 };
 
-proto.insertImage = function ( src, attributes ) {
-    var img = this.createElement( 'IMG', mergeObjects({
-        src: src
-    }, attributes, true ));
-    this.insertElement( img );
-    return img;
-};
-
 proto.linkRegExp = /\b((?:(?:ht|f)tps?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,}\/)(?:[^\s()<>]+|\([^\s()<>]+\))+(?:\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))|([\w\-.%+]+@(?:[\w\-]+\.)+[A-Z]{2,}\b)(?:\?[^&?\s]+=[^&?\s]+(?:&[^&?\s]+=[^&?\s]+)*)?/i;
 
 var addLinks = function ( frag, root, self ) {
