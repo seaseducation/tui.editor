@@ -54,6 +54,9 @@ CodeMirror.defineMode(
       list2: 'variable-3',
       list3: 'keyword',
       hr: 'hr',
+      image: 'image',
+      imageAltText: 'image-alt-text',
+      imageMarker: 'image-marker',
       formatting: 'formatting',
       linkInline: 'link',
       linkEmail: 'link',
@@ -403,6 +406,15 @@ CodeMirror.defineMode(
         if (state.code) {
           styles.push(tokenTypes.code);
         }
+        if (state.image) {
+          styles.push(tokenTypes.image);
+        }
+        if (state.imageAltText) {
+          styles.push(tokenTypes.imageAltText, 'link');
+        }
+        if (state.imageMarker) {
+          styles.push(tokenTypes.imageMarker);
+        }
       }
 
       if (state.header) {
@@ -519,6 +531,36 @@ CodeMirror.defineMode(
           var formattingEscape = tokenTypes.formatting + '-escape';
           return type ? type + ' ' + formattingEscape : formattingEscape;
         }
+      }
+
+      if (ch === '!' && stream.match(/\[[^\]]*\] ?(?:\(|\[)/, false)) {
+        state.imageMarker = true;
+        state.image = true;
+        if (modeCfg.highlightFormatting) state.formatting = 'image';
+        return getType(state);
+      }
+
+      if (ch === '[' && state.imageMarker && stream.match(/[^\]]*\](\(.*?\)| ?\[.*?\])/, false)) {
+        state.imageMarker = false;
+        state.imageAltText = true;
+        if (modeCfg.highlightFormatting) state.formatting = 'image';
+        return getType(state);
+      }
+
+      if (ch === ']' && state.imageAltText) {
+        if (modeCfg.highlightFormatting) state.formatting = 'image';
+        var type = getType(state);
+        state.imageAltText = false;
+        state.image = false;
+        state.inline = state.f = linkHref;
+        return type;
+      }
+
+      if (ch === '[' && !state.image) {
+        if (state.linkText && stream.match(/^.*?\]/)) return getType(state);
+        state.linkText = true;
+        if (modeCfg.highlightFormatting) state.formatting = 'link';
+        return getType(state);
       }
 
       if (ch === ']' && state.linkText) {

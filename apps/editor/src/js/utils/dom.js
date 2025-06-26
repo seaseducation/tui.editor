@@ -481,7 +481,7 @@ const getSiblingRowCellByDirection = function(node, direction, needEdgeCell) {
  * @ignore
  */
 const isMDSupportInlineNode = function(node) {
-  return /^(A|B|BR|CODE|DEL|EM|I|S|SPAN|STRONG)$/gi.test(node.nodeName);
+  return /^(A|B|BR|CODE|DEL|EM|I|IMG|S|SPAN|STRONG)$/gi.test(node.nodeName);
 };
 
 /**

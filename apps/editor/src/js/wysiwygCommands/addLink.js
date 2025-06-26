@@ -7,6 +7,8 @@ import extend from 'tui-code-snippet/object/extend';
 import CommandManager from '../commandManager';
 import ImportManager from '../importManager';
 
+import domUtils from '../utils/dom';
+
 const { decodeURIGraceful, encodeMarkdownCharacters } = ImportManager;
 
 /**
@@ -40,8 +42,9 @@ const AddLink = CommandManager.command(
         sq.removeAllFormatting();
 
         const selectedText = sq.getSelectedText();
+        const selectedImageOnly = this._isSelectedImageOnly(sq.getSelection());
 
-        if (selectedText) {
+        if (selectedText || selectedImageOnly) {
           sq.makeLink(url, linkAttribute);
         } else {
           const link = sq.createElement(
@@ -60,6 +63,20 @@ const AddLink = CommandManager.command(
 
         linkManager.addClassNameToImageLinksInSelection();
       }
+    },
+
+    _isSelectedImageOnly(range) {
+      if (!range.collapsed) {
+        const { startContainer, endContainer } = range;
+
+        if (startContainer && startContainer === endContainer) {
+          return (
+            domUtils.isElemNode(startContainer) && startContainer.firstChild.nodeName === 'IMG'
+          );
+        }
+      }
+
+      return false;
     }
   }
 );

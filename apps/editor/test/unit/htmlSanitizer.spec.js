@@ -20,19 +20,19 @@ describe('htmlSanitizer', function() {
   describe('attributes', () => {
     it('removes all attritube but white list', () => {
       const html =
-        '<div style="display:inline" class="V" title="V" data-custom="V" src="http://www.nhn.com/renewal/img/ci_nhn.png" onload="dd=1" onerror="javascript:alert();"/>';
+        '<img style="display:inline" class="V" title="V" data-custom="V" src="http://www.nhn.com/renewal/img/ci_nhn.png" onload="dd=1" onerror="javascript:alert();"/>';
       const dom = htmlSanitizer(html);
 
-      const $div = $(dom).find('div');
+      const $img = $(dom).find('img');
 
-      expect($div.attr('src')).toBeTruthy();
-      expect($div.attr('class')).toBeTruthy();
-      expect($div.attr('title')).toBeTruthy();
-      expect($div.attr('style')).toBeTruthy();
-      expect($div.attr('data-custom')).toBeTruthy();
+      expect($img.attr('src')).toBeTruthy();
+      expect($img.attr('class')).toBeTruthy();
+      expect($img.attr('title')).toBeTruthy();
+      expect($img.attr('style')).toBeTruthy();
+      expect($img.attr('data-custom')).toBeTruthy();
 
-      expect($div.attr('onload')).not.toBeDefined();
-      expect($div.attr('onerror')).not.toBeDefined();
+      expect($img.attr('onload')).not.toBeDefined();
+      expect($img.attr('onerror')).not.toBeDefined();
     });
 
     it('leaves svg attributes', () => {
@@ -71,6 +71,28 @@ describe('htmlSanitizer', function() {
         );
         expect(htmlSanitizer(`<a href='javas<!-- -->cript:alert()'>xss</a>`, true)).toBe(
           '<a>xss</a>'
+        );
+      });
+
+      it('src attribute with img tag', () => {
+        expect(htmlSanitizer('<img src="javascript:alert();">', true)).toBe('<img>');
+        expect(htmlSanitizer('<img src="  JaVaScRiPt: alert();">', true)).toBe('<img>');
+        expect(htmlSanitizer('<img src="vbscript:alert();">', true)).toBe('<img>');
+        expect(htmlSanitizer('<img src="  VBscript: alert(); ">', true)).toBe('<img>');
+        expect(htmlSanitizer('<img src="  LIVEScript: alert() ;">', true)).toBe('<img>');
+        expect(htmlSanitizer('<img src="java<!-- -->script:alert();">', true)).toBe('<img>');
+      });
+
+      it('src and onerror attribute with img tag', () => {
+        expect(
+          htmlSanitizer(
+            '<img src = x onerror = "javascript: window.onerror = alert; throw XSS">',
+            true
+          )
+        ).toBe('<img src="x">');
+        expect(htmlSanitizer('"><img src="x:x" onerror="alert(XSS)">', true)).toBe('"&gt;<img>');
+        expect(htmlSanitizer('<img src=x:alert(alt) onerror=eval(src) alt=0>', true)).toBe(
+          '<img alt="0">'
         );
       });
     });

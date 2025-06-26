@@ -71,7 +71,7 @@ function htmlSanitizer(html, needHtmlText) {
 function removeUnnecessaryTags(html) {
   const removedTags = domUtils.findAll(
     html,
-    'script, img, iframe, textarea, form, button, select, input, meta, style, link, title, embed, object, details, summary'
+    'script, iframe, textarea, form, button, select, input, meta, style, link, title, embed, object, details, summary'
   );
 
   removedTags.forEach(node => {

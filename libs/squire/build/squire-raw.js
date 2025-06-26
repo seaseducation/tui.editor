@@ -2393,6 +2393,7 @@ var onPaste = function ( event ) {
     var items = clipboardData && clipboardData.items;
     var choosePlain = this.isShiftDown;
     var fireDrop = false;
+    var hasImage = false;
     var plainItem = null;
     var self = this;
     var l, item, type, types, data;
@@ -2417,11 +2418,30 @@ var onPaste = function ( event ) {
             if ( type === 'text/plain' ) {
                 plainItem = item;
             }
+            if ( !choosePlain && /^image\/.*/.test( type ) ) {
+                hasImage = true;
+            }
         }
         // Treat image paste as a drop of an image file.
-        plainItem.getAsString( function ( text ) {
-            self.insertPlainText( text, true );
-        });
+        if ( hasImage ) {
+            this.fireEvent( 'dragover', {
+                dataTransfer: clipboardData,
+                /*jshint loopfunc: true */
+                preventDefault: function () {
+                    fireDrop = true;
+                }
+                /*jshint loopfunc: false */
+            });
+            if ( fireDrop ) {
+                this.fireEvent( 'drop', {
+                    dataTransfer: clipboardData
+                });
+            }
+        } else if ( plainItem ) {
+            plainItem.getAsString( function ( text ) {
+                self.insertPlainText( text, true );
+            });
+        }
         return;
     }
 
@@ -4339,6 +4359,14 @@ proto.insertElement = function ( el, range ) {
     }
 
     return this;
+};
+
+proto.insertImage = function ( src, attributes ) {
+    var img = this.createElement( 'IMG', mergeObjects({
+        src: src
+    }, attributes, true ));
+    this.insertElement( img );
+    return img;
 };
 
 proto.linkRegExp = /\b((?:(?:ht|f)tps?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,}\/)(?:[^\s()<>]+|\([^\s()<>]+\))+(?:\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))|([\w\-.%+]+@(?:[\w\-]+\.)+[A-Z]{2,}\b)(?:\?[^&?\s]+=[^&?\s]+(?:&[^&?\s]+=[^&?\s]+)*)?/i;
