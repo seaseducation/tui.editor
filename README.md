@@ -1,23 +1,13 @@
-# ![TOAST UI Editor](https://uicdn.toast.com/toastui/img/tui-editor-bi.png) - SEAS Education Edition
+# TOAST UI Editor v3 major update planning🏃🏃🏃
+TOAST UI Editor is planning a **v3 major update for 2021**. You can see our detail **RoadMap [here](https://github.com/nhn/tui.editor/issues/1253)!**
+<br>
+<br>
+
+# ![TOAST UI Editor](https://uicdn.toast.com/toastui/img/tui-editor-bi.png)
 
 > GFM  Markdown and WYSIWYG Editor - Productive and Extensible
 
-This fork is in use for the Attain product's form filler. We use the 2.5.4 version as a base to build off of for our app's specific needs.
-
-# Instructions
-
-## Building
-
-``` sh
-$ cd app/editor
-$ npm run build
-```
-
-## Running the Demo
-
-Open `/apps/editor/test/demo/editor.html` in Firefox or Safari.
-
-Chrome can run it if you start Chrome with the `--allow-file-access-from-files` flag.
+[![github release version](https://img.shields.io/github/v/release/nhn/tui.editor.svg?include_prereleases)](https://github.com/nhn/tui.editor/releases/latest) [![npm version](https://img.shields.io/npm/v/@toast-ui/editor.svg)](https://www.npmjs.com/package/@toast-ui/editor) [![license](https://img.shields.io/github/license/nhn/tui.editor.svg)](https://github.com/nhn/tui.editor/blob/master/LICENSE) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/nhn/tui.editor/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) [![code with hearth by NHN](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN-ff1414.svg)](https://github.com/nhn)
 
 <img src="https://user-images.githubusercontent.com/18183560/84614193-59392700-af00-11ea-9a55-4a90a6ab5fe8.gif" />
 

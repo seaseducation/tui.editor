@@ -51,6 +51,7 @@ function isInlineNode(node) {
     tag === 'EM' ||
     tag === 'STRONG' ||
     tag === 'A' ||
+    tag === 'IMG' ||
     tag === 'CODE'
   );
 }

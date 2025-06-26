@@ -275,6 +275,18 @@ describe('Clipboard', () => {
       });
     });
 
+    describe('image', () => {
+      it('should execute addImageBlobHook', () => {
+        const spy = jasmine.createSpy();
+
+        editor.addHook('addImageBlobHook', spy);
+
+        se.fireEvent('paste', pasteClipboardEvent(null, null, 'image/png'));
+
+        expect(spy).toHaveBeenCalled();
+      });
+    });
+
     describe('list', () => {
       it('should decrease the pasted list depth to match current list depth', () => {
         const html = source`
