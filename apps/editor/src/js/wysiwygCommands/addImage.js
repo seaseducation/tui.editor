@@ -4,6 +4,7 @@
  */
 import CommandManager from '../commandManager';
 import ImportManager from '../importManager';
+import ImageValidator from '../imageValidator';
 
 const { decodeURIGraceful, encodeMarkdownCharacters } = ImportManager;
 
@@ -30,11 +31,18 @@ const AddImage = CommandManager.command(
       altText = decodeURIGraceful(altText);
       imageUrl = encodeMarkdownCharacters(imageUrl);
 
+      // Check to see if the image fits into the allowed parameters
+      if (!ImageValidator.evaluateImageSizeFromSrc(imageUrl)) {
+        return false;
+      }
+
       wwe.focus();
 
       if (!sq.hasFormat('PRE')) {
         sq.insertImage(imageUrl, { alt: altText });
       }
+
+      return true;
     }
   }
 );

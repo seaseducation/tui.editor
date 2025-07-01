@@ -4,6 +4,7 @@
  */
 import CommandManager from '../commandManager';
 import ImportManager from '../importManager';
+import ImageValidator from '../imageValidator';
 
 const { decodeURIGraceful, encodeMarkdownCharacters, escapeMarkdownCharacters } = ImportManager;
 
@@ -44,11 +45,18 @@ const AddImage = CommandManager.command(
       altText = decodeURIGraceful(altText);
       altText = escapeMarkdownCharacters(altText);
       imageUrl = encodeMarkdownCharacters(imageUrl);
+
+      // Check to see if the image fits into the allowed parameters
+      if (!ImageValidator.evaluateImageSizeFromSrc(imageUrl)) {
+        return false;
+      }
+
       const replaceText = `![${altText}](${imageUrl})`;
 
       doc.replaceRange(replaceText, from, to, '+addImage');
 
       cm.focus();
+      return true;
     }
   }
 );
