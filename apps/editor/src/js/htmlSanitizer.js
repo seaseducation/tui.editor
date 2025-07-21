@@ -6,7 +6,6 @@ import toArray from 'tui-code-snippet/collection/toArray';
 import isString from 'tui-code-snippet/type/isString';
 
 import domUtils from './utils/dom';
-import ImageValidator from './imageValidator';
 
 const HTML_ATTR_LIST_RX = new RegExp(
   '^(abbr|align|alt|axis|bgcolor|border|cellpadding|cellspacing|class|clear|' +
@@ -60,7 +59,6 @@ function htmlSanitizer(html, needHtmlText) {
 
   removeUnnecessaryTags(root);
   leaveOnlyWhitelistAttribute(root);
-  removeOversizedImages(root);
 
   return domUtils.finalizeHtml(root, needHtmlText);
 }
@@ -78,21 +76,6 @@ function removeUnnecessaryTags(html) {
 
   removedTags.forEach(node => {
     domUtils.remove(node);
-  });
-}
-
-/**
- * Removes images that are over the size limit.
- * @param {HTMLElement} html - root element
- * @private
- */
-function removeOversizedImages(html) {
-  const imgTags = domUtils.findAll(html, 'img');
-
-  imgTags.forEach(node => {
-    if (!ImageValidator.evaluateImagSizeFromeNode(node)) {
-      domUtils.remove(node);
-    }
   });
 }
 
