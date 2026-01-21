@@ -127,6 +127,8 @@ const __nedInstance = [];
  *     @param {boolean} [options.referenceDefinition=false] - whether use the specification of link reference definition
  *     @param {function} [options.customHTMLSanitizer=null] - custom HTML sanitizer
  *     @param {boolean} [options.frontMatter=false] - whether use the front matter
+ *     @param {string} [options.imageUploadEndpoint=null] - The endpoint to use when images are attached to the markdown content body
+ *     @param {string} [options.imageUploadEndpointMethod='POST'] - API action to execute the query with
  */
 class ToastUIEditor {
   constructor(options) {
@@ -173,7 +175,9 @@ class ToastUIEditor {
         customHTMLRenderer: null,
         referenceDefinition: false,
         customHTMLSanitizer: null,
-        frontMatter: false
+        frontMatter: false,
+        imageUploadEndpoint: null,
+        imageUploadEndpointMethod: 'POST'
       },
       options
     );

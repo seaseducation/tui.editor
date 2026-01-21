@@ -125,7 +125,9 @@ class PopupAddImage extends LayerPopup {
 
         if (files.length) {
           const imageFile = files.item(0);
-          const hookCallback = (url, text) => this._applyImage(url, text || altText);
+          const hookCallback = (url, text, fromCallback) => {
+            this._applyImage(url, text || altText, fromCallback);
+          };
 
           this.eventManager.emit('addImageBlobHook', imageFile, hookCallback, TYPE_UI);
         }
@@ -154,11 +156,14 @@ class PopupAddImage extends LayerPopup {
     });
   }
 
-  _applyImage(imageUrl, altText) {
-    this.eventManager.emit('command', 'AddImage', {
+  _applyImage(imageUrl, altText, fromCallback) {
+    const data = {
       imageUrl,
-      altText: altText || 'image'
-    });
+      altText: altText || 'image',
+      source: fromCallback ? 'addImageBlob' : null
+    };
+
+    this.eventManager.emit('command', 'AddImage', data);
     this.hide();
   }
 
