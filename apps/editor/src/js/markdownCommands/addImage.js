@@ -46,9 +46,6 @@ const AddImage = CommandManager.command(
       altText = escapeMarkdownCharacters(altText);
       imageUrl = encodeMarkdownCharacters(imageUrl);
 
-      console.log('Markdown Image Insert!');
-      console.log(data);
-
       // If we haven't been sent this image via a callback hook, bail out.
       if (data.source !== 'addImageBlob') {
         return true;

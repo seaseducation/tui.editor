@@ -31,9 +31,6 @@ const AddImage = CommandManager.command(
       altText = decodeURIGraceful(altText);
       imageUrl = encodeMarkdownCharacters(imageUrl);
 
-      console.log('WYSIWYG Image Insert!');
-      console.log(data);
-
       // Validate that the image comes from a callback
       if (data.source !== 'addImageBlob') {
         return true;
