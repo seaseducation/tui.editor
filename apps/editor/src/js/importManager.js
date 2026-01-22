@@ -143,10 +143,11 @@ class ImportManager {
     this.eventManager.emit(
       'addImageBlobHook',
       blob,
-      (imageUrl, altText) => {
+      (imageUrl, altText, fromCallback) => {
         this.eventManager.emit('command', 'AddImage', {
           imageUrl,
-          altText: altText || blob.name || 'image'
+          altText: altText || blob.name || 'image',
+          source: fromCallback ? 'addImageBlob' : null
         });
       },
       type
