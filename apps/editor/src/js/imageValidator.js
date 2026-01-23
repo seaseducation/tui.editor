@@ -3,7 +3,7 @@
  * @author Breanna Jones, SEAS Education <breanna.jones@seaseducation.com>
  */
 
-const IMAGE_BYTE_LIMIT = 1024 * 90; // 90kb
+const IMAGE_BYTE_LIMIT = 1024 * 1024 * 20; // 20mb
 const ImageTooLargeEvent = new Event('ImageTooLarge');
 
 /**
