@@ -112,7 +112,7 @@ export default class Renderer {
     codeblockTildes: /^(~{3,})/
   };
 
-  static markdownTextToEscapeHtmlRx = /<([a-zA-Z_][a-zA-Z0-9\-._]*)(\s|[^\\/>])*\/?>|<(\/)([a-zA-Z_][a-zA-Z0-9\-._]*)\s*\/?>|<!--[^-]+-->|<([a-zA-Z_][a-zA-Z0-9\-.:/]*)>/;
+  static markdownTextToEscapeHtmlRx = /<([a-zA-Z_][a-zA-Z0-9\-._]*)[^\\/>]*\/?>|<(\/)([a-zA-Z_][a-zA-Z0-9\-._]*)\s*\/?>|<!--[^-]+-->|<([a-zA-Z_][a-zA-Z0-9\-.:/]*)>/;
 
   static markdownTextToEscapeBackSlashRx = /\\[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~\\]/;
 
